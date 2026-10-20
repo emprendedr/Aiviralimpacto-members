@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mi ruta de duplicación</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+:root{--bg:#F2F7F5;--card:#fff;--ink:#0F2A2B;--mut:#4a6466;--line:#d5e3df;--teal:#12A594;--gold:#F5A524;--hero:#0F2A2B;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1819;--card:#13292a;--ink:#e8f3f0;--mut:#9bb7b3;--line:#24413f;--hero:#071213}}
+:root[data-theme="dark"]{--bg:#0b1819;--card:#13292a;--ink:#e8f3f0;--mut:#9bb7b3;--line:#24413f;--hero:#071213}
+html{color-scheme:light dark;scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 "Source Sans 3",system-ui,sans-serif}
+h1,h2,h3{font-family:"Bricolage Grotesque",system-ui,sans-serif;line-height:1.1;margin:0 0 .4em}
+.wrap{max-width:600px;margin:auto;padding:0 16px}
+header{background:var(--hero);color:#fff;padding:30px 0 22px;position:relative;overflow:hidden}
+.orb{position:absolute;width:220px;height:220px;border-radius:50%;background:var(--teal);filter:blur(60px);opacity:.35;top:-70px;right:-50px;animation:fl 9s ease-in-out infinite}
+@keyframes fl{50%{transform:translate(-20px,24px) scale(1.15)}}
+.top{display:flex;gap:16px;align-items:center;position:relative}
+.top h1{font-size:clamp(1.6rem,6vw,2.2rem);font-weight:800;margin:0}
+.top p{margin:2px 0 0;color:#b9d3cf}
+.ring{flex:none;position:relative;width:92px;height:92px}
+.ring svg{width:100%;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:9}
+.ring .bg{stroke:rgba(255,255,255,.18)}
+.ring .fg{stroke:var(--gold);stroke-linecap:round;stroke-dasharray:264;stroke-dashoffset:264;transition:stroke-dashoffset .8s cubic-bezier(.2,.8,.2,1)}
+.ring b{position:absolute;inset:0;display:grid;place-items:center;font:800 1.3rem "Bricolage Grotesque",sans-serif}
+.nav{display:flex;gap:8px;padding:14px 0;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5}
+.nav button{flex:1;position:relative;overflow:hidden;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:14px;font:600 1rem "Source Sans 3",sans-serif;min-height:48px;cursor:pointer;transition:all .25s}
+.nav button:hover{border-color:var(--teal);transform:translateY(-2px)}
+.nav button.on{background:var(--teal);border-color:var(--teal);color:#fff}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+.rip{position:absolute;border-radius:50%;background:rgba(255,255,255,.6);transform:scale(0);animation:rp .6s ease-out;pointer-events:none}
+@keyframes rp{to{transform:scale(4);opacity:0}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;margin:12px 0;overflow:hidden}
+.ph{width:100%;display:flex;gap:12px;align-items:center;padding:16px;background:none;border:0;color:var(--ink);font:inherit;text-align:left;cursor:pointer;min-height:64px}
+.ph .n{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font:800 1.1rem "Bricolage Grotesque",sans-serif;background:var(--line);transition:all .4s}
+.card.cur{border-color:var(--gold);box-shadow:0 0 0 2px rgba(245,165,36,.35)}
+.card.full .n{background:var(--teal);color:#fff;transform:scale(1.1)}
+.ph div{flex:1}.ph small{color:var(--mut)}
+.mini{height:6px;background:var(--line);border-radius:9px;margin-top:6px;overflow:hidden}
+.mini i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--gold));transition:width .5s}
+.tasks{display:none;padding:0 12px 12px}
+.card.open .tasks{display:block;animation:in .3s}
+@keyframes in{from{opacity:0;transform:translateY(8px)}}
+.chk{display:flex;gap:12px;align-items:center;width:100%;text-align:left;background:var(--bg);border:1px solid var(--line);color:var(--ink);border-radius:12px;padding:12px;margin:6px 0;font:inherit;cursor:pointer;min-height:52px;transition:transform .2s,border-color .2s}
+.chk:hover{transform:translateX(4px);border-color:var(--teal)}
+.box{flex:none;width:26px;height:26px;border-radius:8px;border:2px solid var(--teal);display:grid;place-items:center;transition:all .25s}
+.box svg{width:16px;stroke:#fff;fill:none;stroke-width:3;stroke-dasharray:20;stroke-dashoffset:20;transition:stroke-dashoffset .35s}
+.chk.done .box{background:var(--teal);transform:scale(1.15)}
+.chk.done .box svg{stroke-dashoffset:0}
+.chk.done .tx{opacity:.6}
+.chk em{display:block;font-style:normal;font-size:.8rem;color:var(--mut)}
+.cnt{display:flex;align-items:center;gap:12px;padding:14px 16px}
+.cnt div:first-child{flex:1}
+.cnt .v{font:800 1.8rem "Bricolage Grotesque",sans-serif;min-width:40px;text-align:center}
+.rd{width:50px;height:50px;border-radius:50%;border:0;font:800 1.6rem sans-serif;cursor:pointer;position:relative;overflow:hidden;background:var(--gold);color:#1b1500;transition:transform .2s,box-shadow .2s}
+.rd:hover{transform:translateY(-3px);box-shadow:0 8px 18px rgba(245,165,36,.4)}.rd:active{transform:scale(.9)}
+.rd.m{background:var(--line);color:var(--ink)}
+.cnt.ok .v{color:var(--teal)}
+.btn{position:relative;overflow:hidden;border:0;border-radius:999px;padding:12px 22px;font:600 1rem "Source Sans 3",sans-serif;cursor:pointer;background:var(--gold);color:#1b1500;min-height:46px;transition:transform .2s,box-shadow .2s}
+.btn:hover{transform:translateY(-3px);box-shadow:0 10px 22px rgba(245,165,36,.4)}.btn:active{transform:scale(.96)}
+.btn.g{background:transparent;border:2px solid var(--teal);color:var(--ink)}
+input[type=text]{width:100%;font:inherit;padding:12px;border-radius:12px;border:2px solid var(--line);background:var(--bg);color:var(--ink);min-height:48px}
+.log{list-style:none;margin:0;padding:0}
+.log li{display:flex;gap:12px;padding:11px 16px;border-bottom:1px solid var(--line)}
+.log li:before{content:"";flex:none;width:10px;height:10px;border-radius:50%;background:var(--teal);margin-top:8px}
+.log small{display:block;color:var(--mut)}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:12px 0}
+.stats .card{padding:14px;margin:0}.stats b{display:block;font:800 1.6rem "Bricolage Grotesque",sans-serif;color:var(--teal)}
+small.n{color:var(--mut)}
+.toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom,0px));transform:translate(-50%,130px);background:var(--ink);color:var(--bg);padding:12px 20px;border-radius:99px;transition:transform .35s;z-index:9;max-width:90%;text-align:center}
+.toast.show{transform:translate(-50%,0)}
+.pg{display:none}.pg.on{display:block;animation:in .3s}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+.nav{gap:6px}.nav button{font-size:.88rem;padding:0 4px}
+textarea,select{width:100%;font:inherit;padding:12px;border-radius:12px;border:2px solid var(--line);background:var(--bg);color:var(--ink)}
+textarea:focus-visible,select:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+.fh{padding:16px 16px 0}.fb{padding:4px 16px 16px}.fb label{display:block;font-weight:600;margin:12px 0 5px}
+.fb input[type=date]{width:100%;font:inherit;padding:12px;border-radius:12px;border:2px solid var(--line);background:var(--bg);color:var(--ink);min-height:48px}
+.pv{margin:10px 0;padding:12px;border-radius:12px;background:var(--bg);border-left:4px solid var(--gold);font-style:italic;display:none}
+.pv.s{display:block}
+.how{margin:0 0 8px 8px;font-size:.95rem}.how summary{cursor:pointer;color:var(--teal);font-weight:600;padding:6px 0;min-height:36px}
+.how p{margin:4px 0 8px;color:var(--mut)}
+.how .btn{min-height:40px;padding:8px 16px;font-size:.9rem}
+.pr{display:flex;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.pr b{flex:1}.pr select{width:auto;padding:8px}.pr button{border:0;background:none;color:var(--mut);font-size:1.4rem;cursor:pointer;min-width:36px;min-height:36px}
+.flash{animation:fl2 1.2s}
+@keyframes fl2{30%{box-shadow:0 0 0 4px var(--gold)}}
+</style>
+</head>
+<body>
+<header><div class="orb"></div><div class="wrap"><div class="top">
+<div class="ring"><svg viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="42"/><circle class="fg" id="fg" cx="50" cy="50" r="42"/></svg><b id="pc">0%</b></div>
+<div><h1 id="hi">Mi ruta de duplicación</h1><p id="sub">Completa cada paso y deja tu registro.</p></div></div></div></header>
+<main class="wrap">
+<div class="nav" role="tablist"><button data-p="ruta" class="on">Mi ruta</button><button data-p="hoy">Hoy</button><button data-p="form">Formularios</button><button data-p="aud">Auditoría</button></div>
+
+<div class="pg on" id="ruta"><div id="name" class="card" style="padding:16px"><label for="nm"><b>¿Cómo te llamas?</b></label><input type="text" id="nm" placeholder="Tu nombre" autocomplete="name"><p style="margin:10px 0 0"><button class="btn" id="sv">Empezar mi ruta</button></p></div><div id="phs"></div></div>
+
+<div class="pg" id="hoy"><p style="margin:4px 0 8px">Suma cada acción que hagas hoy. Las metas vienen del sistema de 5 acciones diarias.</p><div class="card" id="cn"></div><div class="stats" id="st"></div></div>
+
+<div class="pg" id="form"><p style="margin:4px 0 8px">Llena estos formularios para hacer cada actividad. Al guardar, los pasos relacionados se marcan solos y quedan en tu auditoría.</p><div id="fm"></div></div>
+
+<div class="pg" id="aud"><div class="stats" id="as"></div><div class="card"><ul class="log" id="lg"></ul></div>
+<p class="row"><button class="btn" id="cp">Copiar reporte para mi líder</button> <button class="btn g" id="rs">Borrar mi progreso</button></p>
+<small class="n">Tu avance se guarda solo en este dispositivo y navegador. Copia el reporte y envíalo a tu líder para que lo vea.</small></div>
+</main>
+<div class="toast" id="toast" role="status"></div>
+<script>
+const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
+const P=[
+["Mentalidad y fundamentos","Días 1 a 14",["Escribir mi porqué y mi meta de 12 meses","Escribir mi lista de 100 nombres","Probar el producto y vivir la experiencia","Escribir y aprender mi historia de 60 segundos","Recibir mi primer “no” (es dato, no veredicto)"]],
+["Invitar y presentar","Días 15 a 30",["Contactar a 25 personas con el guion de invitación","Invitar siempre con dos opciones de horario","Ver una presentación completa con mi líder","Dar mi primera presentación acompañado","Dar 5 presentaciones"]],
+["Seguimiento y cierre","Días 31 a 45",["Hacer seguimiento a 5 personas (día 2, 4 y 7)","Practicar en voz alta las 6 objeciones","Cerrar usando los 3 pasos","Inscribir a mi primer socio"]],
+["Arrancar a mi equipo","Días 46 a 60",["Hacer la llamada de bienvenida de mi socio","Escribir su porqué y su meta de 90 días","Ayudarle a hacer su lista de 100","Agendar sus primeras 3 presentaciones conmigo","Pasar de “yo lo hago” a “lo hacemos juntos”"]],
+["Mis primeros 5 y profundidad","Días 61 a 75",["Tener 3 frontales activos","Tener 5 frontales activos","Hacer 2 llamadas semanales con cada frontal","Hacer mi primera reunión de equipo de 30 minutos","Ayudar a un frontal a lograr su primer socio"]],
+["Liderazgo y cultura","Días 76 a 90",["Llevar a mi equipo a un evento","Reconocer en público las acciones de alguien","Ver a un socio presentar solo","Tener a todo mi equipo usando el mismo sistema"]]];
+const C=[["c","Contactos nuevos",5],["s","Seguimientos",5],["p","Presentaciones",2],["a","Personas apoyadas",1]];
+let S={name:"",done:{},cnt:{},log:[]},open=0;
+try{S=Object.assign(S,JSON.parse(localStorage.getItem("ruta")||"{}"))}catch(e){}
+const save=()=>{try{localStorage.setItem("ruta",JSON.stringify(S))}catch(e){}};
+const fmt=t=>new Date(t).toLocaleString("es",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"});
+const day=()=>new Date().toISOString().slice(0,10);
+function toast(t){const e=$("#toast");e.textContent=t;e.classList.add("show");clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove("show"),2200)}
+function add(m){S.log.unshift({t:Date.now(),m});save()}
+document.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const r=b.getBoundingClientRect(),s=document.createElement("span"),d=Math.max(r.width,r.height);s.className="rip";s.style.cssText=`width:${d}px;height:${d}px;left:${e.clientX-r.left-d/2}px;top:${e.clientY-r.top-d/2}px`;b.appendChild(s);setTimeout(()=>s.remove(),600)});
+$$(".nav button").forEach(b=>b.onclick=()=>{$$(".nav button").forEach(x=>x.classList.toggle("on",x===b));$$(".pg").forEach(p=>p.classList.toggle("on",p.id==b.dataset.p));draw()});
+$("#sv").onclick=()=>{const v=$("#nm").value.trim();if(!v){toast("Escribe tu nombre para empezar");return}S.name=v;add("Inicié mi ruta de duplicación");save();draw();toast("Bienvenido, "+v)};
+
+const tid=(i,j)=>i+"-"+j,tot=P.reduce((a,p)=>a+p[2].length,0);
+function pct(){return Math.round(Object.keys(S.done).length/tot*100)}
+function draw(){
+ const pc=pct();$("#pc").textContent=pc+"%";$("#fg").style.strokeDashoffset=264-264*pc/100;
+ $("#hi").textContent=S.name?"Hola, "+S.name:"Mi ruta de duplicación";$("#sub").textContent=pc==100?"Completaste toda la ruta.":"Completa cada paso y deja tu registro.";
+ $("#name").style.display=S.name?"none":"block";
+ let cur=P.findIndex((p,i)=>p[2].some((_,j)=>!S.done[tid(i,j)]));
+ $("#phs").innerHTML="";
+ P.forEach((p,i)=>{const n=p[2].filter((_,j)=>S.done[tid(i,j)]).length,full=n==p[2].length;
+  const c=document.createElement("div");c.className="card"+(full?" full":"")+(i==cur?" cur":"")+(i==open?" open":"");
+  c.innerHTML=`<button class="ph" aria-expanded="${i==open}"><span class="n">${full?"✓":i+1}</span><div><b>${p[0]}</b><br><small>${p[1]}. ${n} de ${p[2].length} pasos${i==cur?". Fase actual":""}</small><div class="mini"><i style="width:${n/p[2].length*100}%"></i></div></div></button><div class="tasks"></div>`;
+  c.querySelector(".ph").onclick=()=>{open=open==i?-1:i;draw()};
+  const T=c.querySelector(".tasks");
+  p[2].forEach((t,j)=>{const k=tid(i,j),b=document.createElement("button");b.className="chk"+(S.done[k]?" done":"");
+   b.innerHTML=`<span class="box"><svg viewBox="0 0 20 20"><path d="M4 10l4 4 8-8"/></svg></span><span class="tx">${t}${S.done[k]?`<em>Completado ${fmt(S.done[k])}</em>`:""}</span>`;
+   b.onclick=()=>{if(!S.name){toast("Primero escribe tu nombre");return}
+    if(S.done[k]){delete S.done[k];add("Desmarqué: "+t)}else{S.done[k]=Date.now();add("Completé: "+t);
+     const nn=p[2].filter((_,x)=>S.done[tid(i,x)]).length;if(nn==p[2].length){add("Terminé la fase: "+p[0]);toast("Fase completa: "+p[0]);open=i+1<P.length?i+1:i}else toast("Paso registrado")}
+    save();draw()};T.appendChild(b);const g=G[k];if(g){const d=document.createElement("details");d.className="how";d.innerHTML=`<summary>Cómo hacerlo</summary><p>${g[0]}</p>`;if(g[1]){const o=document.createElement("button");o.className="btn g";o.textContent="Abrir formulario";o.onclick=()=>goForm(g[1]);d.appendChild(o)}T.appendChild(d)}});
+  $("#phs").appendChild(c)});
+ const td=S.cnt[day()]||{};
+ $("#cn").innerHTML=C.map(([k,l,g])=>`<div class="cnt${(td[k]||0)>=g?" ok":""}"><div><b>${l}</b><br><small class="n">Meta de hoy: ${g}</small></div><button class="rd m" data-k="${k}" data-d="-1" aria-label="Restar ${l}">−</button><div class="v">${td[k]||0}</div><button class="rd" data-k="${k}" data-d="1" aria-label="Sumar ${l}">+</button></div>`).join("");
+ $$(".rd").forEach(b=>b.onclick=()=>{if(!S.name){toast("Primero escribe tu nombre");return}const d=day(),o=S.cnt[d]=S.cnt[d]||{},k=b.dataset.k,v=+b.dataset.d,l=C.find(x=>x[0]==k);
+  const n=Math.max(0,(o[k]||0)+v);if(n==(o[k]||0))return;o[k]=n;if(v>0){add("Sumé 1 a "+l[1]+" (hoy: "+n+")");if(n==l[2])toast("Meta de hoy cumplida: "+l[1])}save();draw()});
+ const all=Object.values(S.cnt),sum=k=>all.reduce((a,o)=>a+(o[k]||0),0),days=Object.values(S.cnt).filter(o=>C.every(([k,,g])=>(o[k]||0)>=g)).length;
+ const stats=[["Contactos",sum("c")],["Seguimientos",sum("s")],["Presentaciones",sum("p")],["Días con metas completas",days]];
+ $("#st").innerHTML=stats.map(a=>`<div class="card"><small class="n">${a[0]}</small><b>${a[1]}</b></div>`).join("");
+ $("#as").innerHTML=[["Avance",pc+"%"],["Pasos completados",Object.keys(S.done).length+" de "+tot],...stats.slice(0,2)].map(a=>`<div class="card"><small class="n">${a[0]}</small><b>${a[1]}</b></div>`).join("");
+ $("#lg").innerHTML=S.log.length?S.log.slice(0,60).map(x=>`<li><div>${x.m}<small>${fmt(x.t)}</small></div></li>`).join(""):`<li><div>Aún no hay actividad. Completa tu primer paso.</div></li>`;
+}
+$("#cp").onclick=async()=>{const all=Object.values(S.cnt),sum=k=>all.reduce((a,o)=>a+(o[k]||0),0);
+ const t=`Reporte de ${S.name||"socio"}\nAvance: ${pct()}% (${Object.keys(S.done).length} de ${tot} pasos)\nContactos: ${sum("c")} | Seguimientos: ${sum("s")} | Presentaciones: ${sum("p")} | Personas apoyadas: ${sum("a")}\n\nÚltimas actividades:\n`+S.log.slice(0,10).map(x=>"- "+fmt(x.t)+": "+x.m).join("\n");
+ try{await navigator.clipboard.writeText(t);toast("Reporte copiado. Pégalo en un mensaje a tu líder")}catch(e){toast("No se pudo copiar. Intenta de nuevo")}};
+let armed=0;$("#rs").onclick=()=>{if(!armed){armed=1;$("#rs").textContent="Toca otra vez para confirmar";setTimeout(()=>{armed=0;$("#rs").textContent="Borrar mi progreso"},3000);return}
+ S={name:"",done:{},cnt:{},log:[]};save();armed=0;$("#rs").textContent="Borrar mi progreso";forms();draw();toast("Progreso borrado")};
+const G={"0-0":["Escribe por qué quieres esto y qué cambiaría en tu vida si lo logras. Pon una meta a 12 meses y una fecha límite. Al guardar el formulario, este paso se marca solo.","why"],
+"0-1":["Escribe un nombre por línea sin decidir quién dirá sí o no. Usa estas categorías: familia, amigos, trabajo, vecinos, redes y personas que te dan un servicio. Al llegar a 100 se marca solo.","list"],
+"0-2":["Usa el producto todos los días durante al menos una semana y anota qué cambió para ti. Esa experiencia real es la base de tu historia."],
+"0-3":["Completa los tres pasos: antes, descubrimiento y ahora. Léela en voz alta hasta que dure unos 60 segundos. Si apenas empiezas, di con honestidad “estoy empezando”.","story"],
+"0-4":["Invita a personas hasta recibir un “no”. Respóndele: “Gracias por tu honestidad”. Un “no” es información, no un rechazo hacia ti."],
+"1-0":["Anota en Mis prospectos a cada persona que contactes. Meta: 5 al día. Al llegar a 25 este paso se marca solo.","pros"],
+"1-1":["Termina cada invitación con dos opciones: “¿Te va mejor el jueves a las 7 pm o el sábado a las 10 am?”. Hazlo en tus próximas 5 invitaciones."],
+"1-2":["Pide a tu líder que te deje mirar una presentación completa. Fíjate en la historia, la herramienta y la pregunta final."],
+"1-3":["Presenta con tu líder en la llamada. Estructura: marco inicial, tu historia, la herramienta y la pregunta “¿qué fue lo que más te gustó?”."],
+"1-4":["Presenta a 5 personas. Cuando cambies su estado a “Presentó” en Mis prospectos, este paso se marca solo.","pros"],
+"2-0":["Escribe a 5 personas que ya vieron la presentación. Día 2: pregunta si tienen dudas. Día 4: comparte un testimonio. Día 7: pide una decisión."],
+"2-1":["Practica en voz alta las 6 respuestas: tiempo, dinero, pirámide, vender, conocer gente y consultar con la pareja. Practica con tu líder o grábate."],
+"2-2":["Paso 1: “Del 1 al 10, ¿qué tanto te interesa?”. Paso 2: “¿Hay algo que te frene?”. Paso 3: “¿Empezamos con el paquete A o B?”."],
+"2-3":["Cuando alguien se inscriba, cambia su estado a “Inscrito” en Mis prospectos. Se marca solo.","pros"],
+"3-0":["Haz la llamada de 15 minutos el mismo día que se inscribe. Anota la fecha en el formulario de tu socio.","socio"],
+"3-1":["En la llamada ayúdale a escribir su porqué y su meta de 90 días, y anótalos en el formulario.","socio"],
+"3-2":["Siéntate con tu socio y ayúdale a escribir sus primeros 50 nombres en la misma llamada. Los otros 50 los completa solo."],
+"3-3":["Agenda 3 presentaciones y acompáñalo en cada una. Anótalas en el formulario.","socio"],
+"3-4":["Sigue 3 pasos: tú lo haces y él mira, lo hacen juntos, él lo hace y tú miras. Nunca hagas todo por él."],
+"4-0":["Elige a 3 de tus socios directos que actúen cada semana y dedícales tu mejor energía."],
+"4-1":["Ayuda a cada frontal a conseguir a sus propios socios. Mide acciones: contactos, presentaciones y seguimientos."],
+"4-2":["Agenda 15 minutos por semana con cada frontal. Pregunta: victoria de la semana, acciones hechas, obstáculo y meta con fecha."],
+"4-3":["Reunión de 30 minutos: 5 de victorias, 10 de entrenamiento, 10 de práctica en parejas y 5 para la meta de la semana."],
+"4-4":["Acompaña a tu frontal en su primera invitación y presentación, y celebra cuando logre su primer socio."],
+"5-0":["Invita a todo tu equipo al próximo evento y ve con ellos. La emoción colectiva retiene a la gente."],
+"5-1":["Reconoce en público a alguien por sus acciones, por ejemplo “hizo 10 invitaciones”, no solo por rangos."],
+"5-2":["Observa a un socio presentar sin ti. Después dile una cosa que hizo bien y una por mejorar."],
+"5-3":["Comparte la misma invitación, presentación y seguimiento con todo tu equipo. Un sistema simple se duplica."]};
+const FM=[
+{k:"why",t:"Mi porqué y mi meta",d:"Un porqué fuerte te sostiene cuando llegan los “no”.",f:[["why","¿Por qué quiero esto? ¿Qué cambiaría en mi vida?","a"],["g12","Mi meta en 12 meses","t"],["dl","Fecha límite","d"],["g90","Mi meta en 90 días","t"]],a:f=>f.why&&f.g12&&f.dl?["0-0"]:[]},
+{k:"list",t:"Mi lista de 100",d:"Un nombre por línea, sin filtrar a nadie.",f:[["names","Un nombre por línea","a"]],a:f=>cn(f.names)>=100?["0-1"]:[]},
+{k:"story",t:"Mi historia de 60 segundos",d:"Antes, descubrimiento y ahora.",f:[["b","Antes: mi situación real","a"],["d","Descubrimiento: cómo conocí esto y por qué lo probé","a"],["n","Ahora: lo que vivo hoy y que ayudo a otros","a"]],a:f=>f.b&&f.d&&f.n?["0-3"]:[]},
+{k:"socio",t:"Arranque de mi socio nuevo",d:"Llénalo durante la llamada de bienvenida de 15 minutos.",f:[["nm","Nombre de mi socio","t"],["dc","Fecha de la llamada de bienvenida","d"],["wy","Su porqué","a"],["g","Su meta de 90 días","t"],["ag","Sus primeras 3 presentaciones (con quién y cuándo)","a"]],a:f=>[f.nm&&f.dc&&"3-0",f.wy&&f.g&&"3-1",(f.ag||"").trim()&&"3-3"].filter(Boolean)}];
+const cn=s=>(s||"").split("\n").filter(x=>x.trim()).length,esc=s=>String(s).replace(/[&<>"]/g,c=>"&#"+c.charCodeAt(0)+";");
+function mark(k){if(S.done[k])return;const[i,j]=k.split("-");S.done[k]=Date.now();add("Completé con formulario: "+P[i][2][j]);toast("Paso completado: "+P[i][2][j])}
+function goForm(k){$$(".nav button").forEach(x=>x.classList.toggle("on",x.dataset.p=="form"));$$(".pg").forEach(p=>p.classList.toggle("on",p.id=="form"));draw();setTimeout(()=>{const e=$("#f-"+k);e.scrollIntoView({behavior:"smooth"});e.classList.remove("flash");void e.offsetWidth;e.classList.add("flash")},60)}
+function forms(){S.f=S.f||{};const R=$("#fm");R.innerHTML="";
+ FM.forEach(m=>{const v=S.f[m.k]=S.f[m.k]||{},c=document.createElement("div");c.className="card";c.id="f-"+m.k;c.innerHTML=`<div class="fh"><h3>${m.t}</h3><small class="n">${m.d}</small></div><div class="fb"></div>`;const B=c.querySelector(".fb"),pv=document.createElement("div");pv.className="pv";
+  const upd=()=>{if(m.k=="list"){pv.className="pv s";pv.style.fontStyle="normal";pv.textContent=cn(v.names)+" de 100 nombres"}if(m.k=="story"&&(v.b||v.d||v.n)){pv.className="pv s";pv.textContent=[v.b,v.d,v.n].filter(Boolean).join(" ")}};
+  m.f.forEach(([id,l,ty])=>{const w=document.createElement("div");w.innerHTML=`<label>${l}</label>`;const i=document.createElement(ty=="a"?"textarea":"input");if(ty!="a")i.type=ty=="d"?"date":"text";if(ty=="a")i.rows=m.k=="list"?10:3;i.value=v[id]||"";i.oninput=()=>{v[id]=i.value;save();upd()};w.appendChild(i);B.appendChild(w)});
+  B.appendChild(pv);upd();const p=document.createElement("p"),b=document.createElement("button");b.className="btn";b.textContent="Guardar y registrar";b.onclick=()=>{save();add("Guardé el formulario: "+m.t);m.a(v).forEach(mark);save();draw();toast("Guardado en tu auditoría")};p.appendChild(b);B.appendChild(p);R.appendChild(c)});
+ const ST=["Contactado","Presentó","En seguimiento","Inscrito","No por ahora"];S.pr=S.pr||[];
+ const c=document.createElement("div");c.className="card";c.id="f-pros";c.innerHTML=`<div class="fh"><h3>Mis prospectos</h3><small class="n">Anota a cada persona que contactes y mueve su estado. Alimenta tus pasos automáticamente.</small></div><div class="fb"><label for="pn">Nombre</label><input type="text" id="pn" placeholder="Nombre del prospecto"><label for="ps">Estado</label><select id="ps">${ST.map(s=>`<option>${s}</option>`).join("")}</select><p><button class="btn" id="pa">Agregar prospecto</button></p><small class="n" id="pt"></small><div id="pl"></div></div>`;R.appendChild(c);
+ const L=()=>{const n=S.pr.length,pres=S.pr.filter(p=>["Presentó","En seguimiento","Inscrito"].includes(p.s)).length,ins=S.pr.filter(p=>p.s=="Inscrito").length;
+  $("#pt").textContent=n+" contactados, "+pres+" presentaron, "+ins+" inscritos";
+  $("#pl").innerHTML=S.pr.map((p,i)=>`<div class="pr"><b>${esc(p.n)}</b><select data-i="${i}" aria-label="Estado de ${esc(p.n)}">${ST.map(s=>`<option${s==p.s?" selected":""}>${s}</option>`).join("")}</select><button data-x="${i}" aria-label="Borrar">×</button></div>`).join("");
+  $$("#pl select").forEach(s=>s.onchange=()=>{const p=S.pr[+s.dataset.i];p.s=s.value;add(p.n+": ahora está en “"+s.value+"”");A();L()});
+  $$("#pl button").forEach(b=>b.onclick=()=>{S.pr.splice(+b.dataset.x,1);save();L()})};
+ const A=()=>{const n=S.pr.length,pres=S.pr.filter(p=>["Presentó","En seguimiento","Inscrito"].includes(p.s)).length,ins=S.pr.filter(p=>p.s=="Inscrito").length;if(n>=25)mark("1-0");if(pres>=5)mark("1-4");if(ins>=1)mark("2-3");save();draw()};
+ $("#pa").onclick=()=>{const v=$("#pn").value.trim();if(!v){toast("Escribe el nombre del prospecto");return}S.pr.push({n:v,s:$("#ps").value,t:Date.now()});add("Agregué un prospecto: "+v+" ("+$("#ps").value+")");$("#pn").value="";A();L()};L()}
+forms();
+draw();
+</script>
+</body>
+</html>
