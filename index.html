@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aiviralimpacto · Plataforma de Socios</title>
+<meta name="description" content="Plataforma privada de formación, clases en vivo y sistema de duplicación para socios de Aiviralimpacto.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* ============ BASE ============ */
+:root{
+  --bg:#07070d;
+  --panel:rgba(255,255,255,.045);
+  --stroke:rgba(255,255,255,.10);
+  --txt:#eef1f8;
+  --muted:#98a2b8;
+  --cyan:#00e5ff;
+  --pink:#ff2d92;
+  --violet:#7c5cff;
+  --grad:linear-gradient(135deg,#00e5ff 0%,#7c5cff 50%,#ff2d92 100%);
+  --radius:18px;
+  --shadow:0 24px 60px rgba(0,0,0,.5);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;min-height:100vh;
+  font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  background:var(--bg);color:var(--txt);
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4,.brand-text{font-family:'Space Grotesk','Inter',sans-serif;letter-spacing:-.02em;margin:0}
+a{color:inherit}
+img{max-width:100%;display:block}
+.hidden{display:none !important}
+.grad-text{
+  background:var(--grad);-webkit-background-clip:text;background-clip:text;
+  color:transparent;-webkit-text-fill-color:transparent;
+}
+.muted{color:var(--muted)}
+
+/* ============ FONDO ANIMADO ============ */
+.bg-aurora{
+  position:fixed;inset:0;z-index:-1;overflow:hidden;
+  background:
+    radial-gradient(900px 600px at 12% -10%, rgba(0,229,255,.20), transparent 60%),
+    radial-gradient(820px 600px at 88% -5%, rgba(255,45,146,.18), transparent 60%),
+    radial-gradient(900px 700px at 50% 115%, rgba(124,92,255,.22), transparent 60%),
+    var(--bg);
+}
+.bg-aurora::after{
+  content:"";position:absolute;inset:-40%;
+  background:conic-gradient(from 0deg, transparent, rgba(0,229,255,.10), transparent 30%, rgba(255,45,146,.10), transparent 60%);
+  filter:blur(70px);opacity:.7;animation:spin 45s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ============ BOTONES ============ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:13px 22px;border-radius:12px;font-weight:600;font-size:15px;
+  font-family:inherit;border:1px solid transparent;cursor:pointer;
+  text-decoration:none;transition:transform .2s,box-shadow .2s,background .2s,border-color .2s;
+}
+.btn:active{transform:scale(.98)}
+.btn-primary{background:var(--grad);color:#07070d;box-shadow:0 10px 30px rgba(0,229,255,.25)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 18px 44px rgba(0,229,255,.38)}
+.btn-ghost{background:rgba(255,255,255,.05);border-color:var(--stroke);color:var(--txt)}
+.btn-ghost:hover{background:rgba(255,255,255,.10);border-color:rgba(0,229,255,.45);transform:translateY(-2px)}
+.btn-block{width:100%}
+.btn-sm{padding:9px 16px;font-size:14px;border-radius:10px}
+
+/* ============ LOGIN ============ */
+.login-wrap{min-height:100vh;display:grid;place-items:center;padding:24px}
+.login-card{
+  width:min(430px,100%);padding:38px 32px 30px;border-radius:26px;
+  background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.02));
+  border:1px solid var(--stroke);backdrop-filter:blur(18px);
+  box-shadow:var(--shadow),inset 0 0 0 1px rgba(0,229,255,.06);
+  animation:pop .5s cubic-bezier(.2,.8,.2,1);
+}
+@keyframes pop{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+.brand{display:flex;align-items:center;gap:11px;text-decoration:none;justify-content:center;margin-bottom:26px}
+.brand-mark{
+  width:40px;height:40px;border-radius:12px;display:grid;place-items:center;
+  background:var(--grad);color:#07070d;font-family:'Space Grotesk';font-weight:700;font-size:16px;
+  box-shadow:0 8px 24px rgba(124,92,255,.45);
+}
+.brand-text{font-size:19px;font-weight:700}
+.login-card h1{font-size:25px;text-align:center;margin-bottom:8px}
+.login-sub{text-align:center;color:var(--muted);font-size:14.5px;margin:0 0 26px;line-height:1.55}
+.field{margin-bottom:15px}
+.field label{display:block;font-size:12.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+.input-wrap{position:relative}
+.input-wrap input{
+  width:100%;padding:14px 46px 14px 14px;border-radius:12px;
+  border:1px solid var(--stroke);background:rgba(0,0,0,.38);
+  color:var(--txt);font-size:15px;font-family:inherit;outline:none;transition:.2s;
+}
+.input-wrap input::placeholder{color:#5d6579}
+.input-wrap input:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,229,255,.15);background:rgba(0,0,0,.55)}
+.toggle-pass{
+  position:absolute;right:8px;top:50%;transform:translateY(-50%);
+  background:none;border:0;color:var(--muted);cursor:pointer;font-size:16px;padding:8px;border-radius:8px;
+}
+.toggle-pass:hover{color:var(--cyan);background:rgba(255,255,255,.06)}
+.error{
+  min-height:20px;margin:14px 0 0;text-align:center;font-size:14px;font-weight:500;color:#ff6b8f;
+  opacity:0;transition:opacity .25s;
+}
+.error.show{opacity:1}
+.login-foot{margin:22px 0 0;text-align:center;font-size:13px;color:var(--muted);line-height:1.6}
+.login-foot a{color:var(--cyan);text-decoration:none}
+.demo-hint{
+  margin-top:16px;padding:10px 14px;border-radius:10px;font-size:12.5px;color:#9fb0d0;
+  background:rgba(0,229,255,.07);border:1px dashed rgba(0,229,255,.28);text-align:center;
+}
+
+/* ============ CABECERA STICKY ============ */
+.sticky-head{
+  position:sticky;top:0;z-index:60;
+  background:rgba(7,7,13,.82);backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--stroke);
+}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:13px 22px;max-width:1240px;margin:0 auto}
+.topbar .brand{margin:0;justify-content:flex-start}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.user-chip{
+  display:inline-flex;align-items:center;gap:8px;padding:7px 13px;border-radius:999px;
+  background:rgba(255,255,255,.05);border:1px solid var(--stroke);font-size:13.5px;font-weight:500;
+}
+.user-chip .dot{width:8px;height:8px;border-radius:50%;background:#2bff9e;box-shadow:0 0 10px #2bff9e;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.user-chip .plan{
+  font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:2px 8px;border-radius:999px;background:var(--grad);color:#07070d;
+}
+.nav{
+  display:flex;gap:6px;overflow-x:auto;padding:0 22px 11px;max-width:1240px;margin:0 auto;
+  scrollbar-width:none;
+}
+.nav::-webkit-scrollbar{display:none}
+.nav a{
+  white-space:nowrap;text-decoration:none;font-size:14px;font-weight:500;color:var(--muted);
+  padding:8px 15px;border-radius:10px;border:1px solid transparent;transition:.2s;
+}
+.nav a:hover{color:var(--txt);background:rgba(255,255,255,.06);border-color:var(--stroke)}
+
+/* ============ HERO ============ */
+.hero{
+  display:grid;grid-template-columns:1.05fr .95fr;gap:44px;align-items:center;
+  max-width:1180px;margin:0 auto;padding:64px 22px 30px;
+}
+.pill{
+  display:inline-flex;align-items:center;gap:8px;padding:7px 15px;border-radius:999px;
+  font-size:12.5px;font-weight:600;letter-spacing:.04em;
+  background:rgba(0,229,255,.10);border:1px solid rgba(0,229,255,.30);color:#8ceeff;
+  margin-bottom:20px;
+}
+.pill .dot{width:7px;height:7px;border-radius:50%;background:#2bff9e;box-shadow:0 0 10px #2bff9e}
+.hero h1{font-size:clamp(30px,4.6vw,50px);line-height:1.1;margin-bottom:18px}
+.hero .lead{font-size:17px;line-height:1.65;color:var(--muted);margin:0 0 28px;max-width:540px}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:38px}
+.stat{
+  padding:16px 10px;border-radius:14px;text-align:center;
+  background:rgba(255,255,255,.04);border:1px solid var(--stroke);transition:.25s;
+}
+.stat:hover{border-color:rgba(0,229,255,.4);transform:translateY(-3px)}
+.stat b{display:block;font-family:'Space Grotesk';font-size:23px;line-height:1.2}
+.stat span{font-size:11.5px;color:var(--muted);letter-spacing:.04em}
+.hero-visual{position:relative}
+.hero-visual::before{
+  content:"";position:absolute;inset:-18% -12%;z-index:-1;
+  background:radial-gradient(circle at 60% 40%, rgba(124,92,255,.45), transparent 65%);
+  filter:blur(50px);
+}
+.glow-card{
+  position:relative;border-radius:24px;overflow:hidden;
+  border:1px solid rgba(255,255,255,.14);
+  box-shadow:0 40px 90px rgba(0,0,0,.65),0 0 0 1px rgba(0,229,255,.12) inset;
+  background:linear-gradient(135deg,#12162a,#241033);
+}
+.glow-card img{width:100%;aspect-ratio:4/3.2;object-fit:cover;opacity:.85}
+.glow-card-badge{
+  position:absolute;bottom:16px;left:16px;right:16px;
+  display:flex;align-items:center;gap:9px;padding:11px 15px;border-radius:12px;
+  background:rgba(7,7,13,.78);backdrop-filter:blur(10px);border:1px solid var(--stroke);
+  font-size:12.5px;font-weight:600;letter-spacing:.05em;
+}
+.glow-card-badge .dot{width:8px;height:8px;border-radius:50%;background:#ff2d92;box-shadow:0 0 12px #ff2d92;animation:pulse 1.6s infinite}
+
+/* ============ SECCIONES ============ */
+.section{max-width:1180px;margin:0 auto;padding:64px 22px}
+section[id]{scroll-margin-top:130px}
+.section-head{max-width:720px;margin-bottom:34px}
+.eyebrow{
+  display:inline-block;font-size:12px;font-weight:700;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--cyan);margin-bottom:12px;
+}
+.section-head h2{font-size:clamp(25px,3.6vw,36px);margin-bottom:12px}
+.section-head .lead{font-size:16.5px;line-height:1.65;color:var(--muted);margin:0}
+
+.grid{display:grid;gap:18px}
+.grid-2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.grid-3{grid-template-columns:repeat(auto-fit,minmax(270px,1fr))}
+
+.card{
+  position:relative;padding:26px;border-radius:var(--radius);
+  background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.018));
+  border:1px solid var(--stroke);transition:transform .25s,border-color .25s,box-shadow .25s;
+}
+.card:hover{transform:translateY(-4px);border-color:rgba(0,229,255,.35);box-shadow:0 22px 55px rgba(0,0,0,.45)}
+.card h3{font-size:19px;margin-bottom:10px}
+.card p{font-size:14.5px;line-height:1.6;color:var(--muted);margin:0 0 16px}
+
+/* Horario */
+.schedule{list-style:none;padding:0;margin:14px 0 0;display:grid;gap:9px}
+.schedule li{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:12px 15px;border-radius:12px;background:rgba(0,0,0,.30);
+  border:1px solid rgba(255,255,255,.06);transition:.2s;
+}
+.schedule li:hover{border-color:rgba(124,92,255,.45);background:rgba(124,92,255,.10)}
+.schedule .day{font-weight:600;font-size:14.5px;display:flex;align-items:center;gap:9px}
+.schedule .day::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--grad)}
+.schedule .times{font-size:13.5px;color:#8ceeff;font-variant-numeric:tabular-nums}
+
+/* Zoom / copiar */
+.copy-row{
+  display:flex;align-items:center;gap:10px;margin-top:10px;
+  padding:11px 14px;border-radius:11px;background:rgba(0,0,0,.34);border:1px solid rgba(255,255,255,.07);
+}
+.copy-row span{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);min-width:46px}
+.copy-row code{font-family:'Space Grotesk',monospace;font-size:15px;color:#fff;flex:1;letter-spacing:.06em}
+.btn-copy{
+  padding:6px 12px;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;
+  background:rgba(0,229,255,.14);border:1px solid rgba(0,229,255,.38);color:#8ceeff;
+  font-family:inherit;transition:.2s;
+}
+.btn-copy:hover{background:rgba(0,229,255,.26);color:#fff}
+.note{margin-top:16px;font-size:12.5px;color:#7f8aa3;line-height:1.5}
+
+/* Tarjetas de tutoriales */
+.thumb{
+  position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;margin-bottom:16px;
+  background:linear-gradient(135deg,#1a2040,#2a1030);
+}
+.thumb img{width:100%;height:100%;object-fit:cover;opacity:.88;transition:transform .45s,opacity .45s}
+.card:hover .thumb img{transform:scale(1.07);opacity:1}
+.thumb::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 40%,rgba(7,7,13,.75));
+}
+.badge-dur{
+  position:absolute;bottom:10px;right:10px;z-index:2;
+  padding:4px 10px;border-radius:8px;font-size:12px;font-weight:600;
+  background:rgba(7,7,13,.82);border:1px solid var(--stroke);
+}
+.play-btn{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;
+  width:52px;height:52px;border-radius:50%;display:grid;place-items:center;
+  background:rgba(7,7,13,.65);border:1px solid rgba(0,229,255,.55);
+  color:var(--cyan);font-size:17px;backdrop-filter:blur(6px);transition:.25s;
+}
+.card:hover .play-btn{background:var(--grad);color:#07070d;border-color:transparent;transform:translate(-50%,-50%) scale(1.1)}
+.tag{
+  display:inline-block;padding:4px 10px;border-radius:999px;font-size:11.5px;font-weight:600;
+  letter-spacing:.05em;text-transform:uppercase;margin-bottom:10px;
+  background:rgba(124,92,255,.16);border:1px solid rgba(124,92,255,.42);color:#c0b0ff;
+}
+
+/* Pasos duplicación */
+.step{display:flex;gap:15px;align-items:flex-start;padding:16px 0}
+.step + .step{border-top:1px solid rgba(255,255,255,.07)}
+.step-num{
+  flex:0 0 42px;height:42px;border-radius:12px;display:grid;place-items:center;
+  background:var(--grad);color:#07070d;font-family:'Space Grotesk';font-weight:700;font-size:16px;
+  box-shadow:0 8px 22px rgba(124,92,255,.35);
+}
+.step h4{font-size:15.5px;margin-bottom:5px}
+.step p{font-size:14px;color:var(--muted);margin:0;line-height:1.55}
+
+/* Presentación / proyecto */
+.ratio{position:relative;aspect-ratio:16/9;border-radius:16px;overflow:hidden;background:linear-gradient(135deg,#141a33,#2a1030);border:1px solid var(--stroke)}
+.ratio iframe,.ratio img{position:absolute;inset:0;width:100%;height:100%;border:0;object-fit:cover}
+.frame-placeholder{
+  position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:10px;text-align:center;padding:26px;
+  background:radial-gradient(circle at 50% 45%, rgba(124,92,255,.22), transparent 70%);
+}
+.frame-placeholder h4{font-size:17px}
+.frame-placeholder p{margin:0 0 6px;font-size:14px;max-width:420px}
+
+/* Footer */
+.footer{
+  max-width:1180px;margin:40px auto 0;padding:34px 22px 46px;
+  border-top:1px solid var(--stroke);
+  display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;
+}
+.footer p{margin:0;font-size:13px;color:#7f8aa3}
+.footer .links{display:flex;gap:18px;flex-wrap:wrap}
+.footer .links a{font-size:13px;color:var(--muted);text-decoration:none;transition:.2s}
+.footer .links a:hover{color:var(--cyan)}
+
+/* Toast */
+.toast{
+  position:fixed;left:50%;bottom:28px;transform:translate(-50%,140%);
+  padding:13px 22px;border-radius:12px;font-size:14px;font-weight:600;
+  background:rgba(7,7,13,.92);border:1px solid rgba(0,229,255,.45);
+  color:#8ceeff;backdrop-filter:blur(12px);box-shadow:var(--shadow);
+  z-index:999;transition:transform .35s cubic-bezier(.2,.8,.2,1);pointer-events:none;
+}
+.toast.show{transform:translate(-50%,0)}
+
+/* Animación de entrada */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .65s cubic-bezier(.2,.7,.2,1),transform .65s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+
+/* ============ RESPONSIVE ============ */
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;padding-top:44px;gap:34px}
+  .stats{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:640px){
+  .topbar{padding:11px 15px}
+  .brand-text{font-size:16px}
+  .user-chip{padding:6px 10px;font-size:12.5px}
+  .section{padding:48px 16px}
+  .hero{padding:36px 16px 20px}
+  .card{padding:20px}
+  .footer{flex-direction:column;align-items:flex-start}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+
+<body>
+
+<!-- Fondo decorativo -->
+<div class="bg-aurora" aria-hidden="true"></div>
+
+<!-- ==================== LOGIN ==================== -->
+<div class="login-wrap" id="login">
+  <div class="login-card">
+    <a class="brand" href="#" aria-label="Aiviralimpacto">
+      <span class="brand-mark">AI</span>
+      <span class="brand-text">Aiviralimpacto</span>
+    </a>
+
+    <h1>Acceso a Socios</h1>
+    <p class="login-sub">Área privada de formación, clases en vivo y herramientas de duplicación.</p>
+
+    <form id="loginForm" autocomplete="on" novalidate>
+      <div class="field">
+        <label for="user">Usuario</label>
+        <div class="input-wrap">
+          <input type="text" id="user" name="user" placeholder="Tu usuario" autocomplete="username" required>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="pass">Contraseña</label>
+        <div class="input-wrap">
+          <input type="password" id="pass" name="pass" placeholder="••••••••" autocomplete="current-password" required>
+          <button type="button" class="toggle-pass" id="togglePass" aria-label="Mostrar contraseña">👁</button>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block" id="btnLogin">Entrar a la plataforma</button>
+    </form>
+
+    <p class="error" id="loginError" role="alert"></p>
+
+    <p class="login-foot">¿Problemas para entrar? <a href="mailto:soporte@aiviralimpacto.com">Contacta a soporte</a></p>
+
+    <div class="demo-hint">Demo: <strong>socio</strong> / <strong>impacto2024</strong></div>
+  </div>
+</div>
+
+<!-- ==================== APP (contenido protegido) ==================== -->
+<div id="app" class="hidden"></div>
+
+<!-- El contenido real vive aquí y sólo se inyecta tras validar la sesión -->
+<template id="appTemplate">
+
+  <div class="sticky-head">
+    <header class="topbar">
+      <a class="brand" href="#top">
+        <span class="brand-mark">AI</span>
+        <span class="brand-text">Aiviralimpacto</span>
+      </a>
+      <div class="topbar-right">
+        <span class="user-chip">
+          <span class="dot" aria-hidden="true"></span>
+          <span data-user-nombre>Socio</span>
+          <span class="plan" data-user-plan>Élite</span>
+        </span>
+        <button type="button" class="btn btn-ghost btn-sm" id="btnSalir">Salir</button>
+      </div>
+    </header>
+
+    <nav class="nav" aria-label="Secciones de la plataforma">
+      <a href="#clases">Clases</a>
+      <a href="#tutoriales">Tutoriales</a>
+      <a href="#duplicacion">Sistema de Duplicación</a>
+      <a href="#presentacion">Presentación</a>
+      <a href="#proyecto">Mi Proyecto</a>
+    </nav>
+  </div>
+
+  <main id="top">
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="pill"><span class="dot" aria-hidden="true"></span> Plataforma oficial de socios</span>
+        <h1>Tu negocio de <span class="grad-text">IA y viralidad</span> en modo duplicación</h1>
+        <p class="lead">
+          Bienvenido a tu centro de operaciones. Aquí encontrarás las clases en vivo, los tutoriales
+          paso a paso, el sistema de duplicación y las herramientas listas para replicar resultados.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#clases">Ver clases en vivo →</a>
+          <a class="btn btn-ghost" href="#duplicacion">Sistema de duplicación</a>
+        </div>
+
+        <div class="stats">
+          <div class="stat"><b class="grad-text">6</b><span>Clases / semana</span></div>
+          <div class="stat"><b class="grad-text">24</b><span>Módulos</span></div>
+          <div class="stat"><b class="grad-text">+1.2K</b><span>Socios activos</span></div>
+          <div class="stat"><b class="grad-text">24/7</b><span>Soporte</span></div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="glow-card">
+          <img src="https://picsum.photos/seed/aiviralimpacto-hero/900/720" alt="Panel de formación de Aiviralimpacto" loading="eager" width="900" height="720">
+          <div class="glow-card-badge"><span class="dot" aria-hidden="true"></span> TRANSMISIÓN EN VIVO · LUN / MAR / MIÉ / VIE</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CLASES -->
+    <section class="section reveal" id="clases">
+      <div class="section-head">
+        <span class="eyebrow">Formación en vivo</span>
+        <h2>Clases en vivo</h2>
+        <p class="lead">Aprende IA, redes sociales y automatización de ingresos con sesiones prácticas dos veces al día. Todos los horarios están en Hora del Pacífico (PT).</p>
+      </div>
+
+      <div class="grid grid-2">
+        <div class="card">
+          <h3>Horario semanal</h3>
+          <p>Dos sesiones diarias para que elijas la que mejor se adapte a tu zona horaria.</p>
+          <ul class="schedule">
+            <li><span class="day">Lunes</span><span class="times">8:30 AM · 6:30 PM</span></li>
+            <li><span class="day">Martes</span><span class="times">8:30 AM · 6:30 PM</span></li>
+            <li><span class="day">Miércoles</span><span class="times">8:30 AM · 6:30 PM</span></li>
+            <li><span class="day">Viernes</span><span class="times">8:30 AM · 6:30 PM</span></li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Acceso a Zoom</h3>
+          <p>Entra desde tu computadora o móvil. Te recomendamos conectarte 5 minutos antes.</p>
+
+          <a class="btn btn-primary btn-block"
+             href="https://us06web.zoom.us/j/2216623617?pwd=2YnVoab2lAnhwbEPN7bzMPfajN08HZ.1"
+             target="_blank" rel="noopener noreferrer">
+            Entrar a la clase
+          </a>
+
+          <div class="copy-row">
+            <span>ID</span><code>2216623617</code>
+            <button type="button" class="btn-copy" data-copy="2216623617">Copiar</button>
+          </div>
+          <div class="copy-row">
+            <span>Clave</span><code>33777</code>
+            <button type="button" class="btn-copy" data-copy="33777">Copiar</button>
+          </div>
+
+          <p class="note">🔒 Este enlace es exclusivo para socios activos. No lo compartas fuera de la plataforma.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TUTORIALES -->
+    <section class="section reveal" id="tutoriales">
+      <div class="section-head">
+        <span class="eyebrow">Biblioteca</span>
+        <h2>Tutoriales</h2>
+        <p class="lead">Videos de entrenamiento grabados para que avances a tu ritmo y refuerces cada módulo cuando lo necesites.</p>
+      </div>
+
+      <div class="grid grid-3">
+        <article class="card">
+          <div class="thumb">
+            <img src="https://picsum.photos/seed/aiviral-tut1/640/360" alt="Tutorial de fundamentos de IA" loading="lazy" width="640" height="360">
+            <span class="play-btn" aria-hidden="true">▶</span>
+            <span class="badge-dur">18:42</span>
+          </div>
+          <span class="tag">Fundamentos</span>
+          <h3>Cómo funciona la IA viral</h3>
+          <p>Entiende el motor detrás de la viralidad y cómo aplicarlo a tu contenido desde el primer día.</p>
+          <a class="btn btn-ghost btn-sm" href="#" data-tutorial="Fundamentos de IA viral">Ver tutorial →</a>
+        </article>
+
+        <article class="card">
+          <div class="thumb">
+            <img src="https://picsum.photos/seed/aiviral-tut2/640/360" alt="Tutorial de contenido con inteligencia artificial" loading="lazy" width="640" height="360">
+            <span class="play-btn" aria-hidden="true">▶</span>
+            <span class="badge-dur">24:10</span>
+          </div>
+          <span class="tag">Contenido</span>
+          <h3>Crear contenido con IA en 10 minutos</h3>
+          <p>Guiones, imágenes y edición asistida: el flujo de trabajo completo para publicar todos los días.</p>
+          <a class="btn btn-ghost btn-sm" href="#" data-tutorial="Contenido con IA">Ver tutorial →</a>
+        </article>
+
+        <article class="card">
+          <div class="thumb">
+            <img src="https://picsum.photos/seed/aiviral-tut3/640/360" alt="Tutorial de automatización de ingresos" loading="lazy" width="640" height="360">
+            <span class="play-btn" aria-hidden="true">▶</span>
+            <span class="badge-dur">31:05</span>
+          </div>
+          <span class="tag">Automatización</span>
+          <h3>Automatiza tus ingresos</h3>
+          <p>Configura embudos, respuestas automáticas y seguimiento para vender mientras duermes.</p>
+          <a class="btn btn-ghost btn-sm" href="#" data-tutorial="Automatización de ingresos">Ver tutorial →</a>
+        </article>
+      </div>
+    </section>
+
+    <!-- DUPLICACIÓN -->
+    <section class="section reveal" id="duplicacion">
+      <div class="section-head">
+        <span class="eyebrow">Método</span>
+        <h2>Sistema de Duplicación</h2>
+        <p class="lead">Un proceso probado en 4 pasos para que puedas replicar el modelo sin improvisar.</p>
+      </div>
+
+      <div class="grid grid-2">
+        <div class="card">
+          <h3>Los 4 pasos</h3>
+          <div class="step">
+            <div class="step-num">1</div>
+            <div><h4>Preparación</h4><p>Configura tus perfiles, tu enlace de registro y tu material de presentación.</p></div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div><h4>Contenido</h4><p>Publica 2 contenidos diarios usando las plantillas y prompts aprobados.</p></div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div><h4>Conversión</h4><p>Aplica el guion de ventas y deriva a la presentación oficial.</p></div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div><h4>Duplicación</h4><p>Enseña el mismo proceso a tu equipo con las herramientas de esta plataforma.</p></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Herramientas descargables</h3>
+          <p>Todo lo que necesitas para ejecutar el sistema desde hoy.</p>
+
+          <a class="btn btn-ghost btn-block" style="margin-bottom:10px;justify-content:flex-start" href="#" data-recurso="Plantilla de presentación">📄 Plantilla de presentación (PPT)</a>
+          <a class="btn btn-ghost btn-block" style="margin-bottom:10px;justify-content:flex-start" href="#" data-recurso="Guion de ventas">🗣 Guion de ventas (PDF)</a>
+          <a class="btn btn-ghost btn-block" style="margin-bottom:10px;justify-content:flex-start" href="#" data-recurso="Checklist de lanzamiento">✅ Checklist de lanzamiento</a>
+          <a class="btn btn-ghost btn-block" style="justify-content:flex-start" href="#" data-recurso="Pack de prompts IA">🤖 Pack de 50 prompts de IA</a>
+
+          <p class="note">Sustituye los enlaces <code>#</code> por la URL real de cada archivo en Drive, Notion o Vercel.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRESENTACIÓN -->
+    <section class="section reveal" id="presentacion">
+      <div class="section-head">
+        <span class="eyebrow">Material oficial</span>
+        <h2>Presentación Oficial</h2>
+        <p class="lead">La presentación del negocio que debes usar al compartir la oportunidad con tus contactos.</p>
+      </div>
+
+      <div class="card">
+        <div class="ratio">
+          <div class="frame-placeholder">
+            <div class="frame-icon" style="font-size:26px">🎬</div>
+            <h4>Video de presentación oficial</h4>
+            <p class="muted">Sustituye este bloque por tu video de YouTube, Vimeo o un PDF embebido.</p>
+            <a class="btn btn-primary btn-sm" href="#" data-recurso="Presentación oficial">Abrir presentación</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROYECTO -->
+    <section class="section reveal" id="proyecto">
+      <div class="section-head">
+        <span class="eyebrow">Tu panel</span>
+        <h2>Mi Proyecto</h2>
+        <p class="lead">Tu panel personal de duplicación. Cárgalo cuando estés listo para empezar a ejecutar.</p>
+      </div>
+
+      <div class="card">
+        <div class="ratio" id="projectFrame">
+          <div class="frame-placeholder">
+            <div class="frame-icon" style="font-size:26px">🚀</div>
+            <h4>Panel de duplicación</h4>
+            <p class="muted">Se carga de forma diferida para no ralentizar la plataforma.</p>
+            <button type="button" class="btn btn-primary btn-sm" id="btnCargarPanel">Cargar mi panel</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div>
+      <a class="brand" href="#top" style="justify-content:flex-start;margin-bottom:8px">
+        <span class="brand-mark">AI</span>
+        <span class="brand-text">Aiviralimpacto</span>
+      </a>
+      <p>© <span data-year>2025</span> Aiviralimpacto · Plataforma privada de socios.</p>
+    </div>
+    <div class="links">
+      <a href="#clases">Clases</a>
+      <a href="#tutoriales">Tutoriales</a>
+      <a href="#duplicacion">Duplicación</a>
+      <a href="mailto:soporte@aiviralimpacto.com">Soporte</a>
+    </div>
+  </footer>
+
+</template>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<noscript>
+  <div style="padding:24px;text-align:center;color:#ff6b8f">
+    Necesitas activar JavaScript para acceder a la plataforma.
+  </div>
+</noscript>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ================== CONFIGURACIÓN ================== */
+  const CLAVE_XOR        = 90;                 // clave de ofuscación de contraseñas
+  const SESSION_KEY      = 'avi_sesion';       // clave de sesión
+  const INTENTOS_KEY     = 'avi_intentos';     // control de intentos fallidos
+  const DURACION_SESION  = 8 * 60 * 60 * 1000; // 8 horas
+  const MAX_INTENTOS     = 5;                  // intentos antes de bloquear
+  const BLOQUEO_MS       = 60 * 1000;          // 60 segundos de bloqueo
+  const PANEL_URL        = 'https://TU-PROYECTO.vercel.app';
+
+  /* Usuarios autorizados.
+     `clave` está ofuscada con XOR. Para generar una nueva, abre la consola
+     del navegador y ejecuta:  codificarClave('miNuevaClave')                 */
+  const USUARIOS = {
+    socio: {
+      clave: [51,55,42,59,57,46,53,104,106,104,110], // impacto2024
+      nombre: 'Socio Aiviral',
+      plan: 'Élite',
+      activo: true,
+      vence: '2099-12-31'
+    }
+    // , maria: { clave:[...], nombre:'María G.', plan:'Pro', activo:true, vence:'2026-06-30' }
+  };
+
+  /* ================== UTILIDADES ================== */
+  const $ = (sel, ctx) => (ctx || document).querySelector(sel);
+  const $$ = (sel, ctx) => Array.from((ctx || document).querySelectorAll(sel));
+  const decodificar = arr => arr.map(c => String.fromCharCode(c ^ CLAVE_XOR)).join('');
+
+  // Helper para generar el array ofuscado de una contraseña nueva
+  window.codificarClave = function (texto) {
+    const arr = Array.from(texto).map(ch => ch.charCodeAt(0) ^ CLAVE_XOR);
+    console.log('[' + arr.join(',') + ']');
+    return arr;
+  };
+
+  let toastTimer;
+  function toast(msg) {
+    const t = $('#toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2300);
+  }
+
+  function mostrarError(msg) {
+    const el = $('#loginError');
+    el.textContent = msg;
+    el.classList.add('show');
+  }
+  function limpiarError() {
+    const el = $('#loginError');
+    el.textContent = '';
+    el.classList.remove('show');
+  }
+
+  /* ================== CONTROL DE INTENTOS ================== */
+  function leerIntentos() {
+    try {
+      return JSON.parse(sessionStorage.getItem(INTENTOS_KEY)) || { fallos: 0, hasta: 0 };
+    } catch (e) {
+      return { fallos: 0, hasta: 0 };
+    }
+  }
+  function guardarIntentos(obj) {
+    sessionStorage.setItem(INTENTOS_KEY, JSON.stringify(obj));
+  }
+
+  /* ================== VALIDACIÓN DE CREDENCIALES ================== */
+  function validarAcceso(usuario, password) {
+    const u = USUARIOS[usuario.trim().toLowerCase()];
+
+    if (!u || decodificar(u.clave) !== password) {
+      return { ok: false, msg: 'Usuario o contraseña incorrectos.' };
+    }
+    if (!u.activo) {
+      return { ok: false, msg: 'Tu cuenta está inactiva. Contacta a soporte para reactivarla.' };
+    }
+    if (new Date(u.vence + 'T23:59:59') < new Date()) {
+      return { ok: false, msg: 'Tu membresía venció el ' + u.vence + '. Renueva para continuar.' };
+    }
+    return { ok: true, usuario: u };
+  }
+
+  /* ================== SESIÓN ================== */
+  function guardarSesion(nombreUsuario) {
+    sessionStorage.setItem(SESSION_KEY, JSON.stringify({
+      user: nombreUsuario,
+      exp: Date.now() + DURACION_SESION
+    }));
+  }
+
+  function leerSesion() {
+    try {
+      const s = JSON.parse(sessionStorage.getItem(SESSION_KEY));
+      if (!s || !s.exp || s.exp < Date.now()) {
+        sessionStorage.removeItem(SESSION_KEY);
+        return null;
+      }
+      const u = USUARIOS[s.user];
+      if (!u || !u.activo) return null;
+      return { user: s.user, usuario: u };
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /* ================== RENDER DE LA APP ================== */
+  let appIniciada = false;
+
+  function mostrarApp(nombreUsuario) {
+    const usuario = USUARIOS[nombreUsuario];
+    const app = $('#app');
+    const tpl = $('#appTemplate');
+
+    app.innerHTML = '';
+    app.appendChild(tpl.content.cloneNode(true));
+    app.classList.remove('hidden');
+    $('#login').classList.add('hidden');
+
+    // Datos del usuario
+    $$('[data-user-nombre]', app).forEach(el => el.textContent = usuario.nombre);
+    $$('[data-user-plan]', app).forEach(el => el.textContent = usuario.plan);
+    $$('[data-year]', app).forEach(el => el.textContent = new Date().getFullYear());
+
+    if (!appIniciada) {
+      iniciarApp();
+      appIniciada = true;
+    }
+
+    window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+  }
+
+  function cerrarSesion() {
+    sessionStorage.removeItem(SESSION_KEY);
+    const app = $('#app');
+    app.classList.add('hidden');
+    app.innerHTML = '';
+    $('#login').classList.remove('hidden');
+    $('#loginForm').reset();
+    limpiarError();
+    appIniciada = false;
+    toast('Sesión cerrada correctamente');
+  }
+
+  /* ================== LISTENERS DENTRO DE LA APP ================== */
+  function iniciarApp() {
+    const app = $('#app');
+
+    // Salir
+    const btnSalir = $('#btnSalir', app);
+    if (btnSalir) btnSalir.addEventListener('click', cerrarSesion);
+
+    // Copiar al portapapeles
+    $$('[data-copy]', app).forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const valor = btn.getAttribute('data-copy');
+        try {
+          await navigator.clipboard.writeText(valor);
+          toast('Copiado: ' + valor);
+        } catch (e) {
+          // Fallback para navegadores sin permisos de portapapeles
+          const tmp = document.createElement('textarea');
+          tmp.value = valor;
+          document.body.appendChild(tmp);
+          tmp.select();
+          try { document.execCommand('copy'); toast('Copiado: ' + valor); }
+          catch (err) { toast('No se pudo copiar. Cópialo manualmente.'); }
+          document.body.removeChild(tmp);
+        }
+      });
+    });
+
+    // Enlaces placeholder (tutoriales / recursos / presentación)
+    $$('[data-tutorial], [data-recurso]', app).forEach(a => {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        const nombre = a.getAttribute('data-tutorial') || a.getAttribute('data-recurso');
+        toast('Abre "' + nombre + '": reemplaza el href="#" por tu enlace real.');
+      });
+    });
+
+    // Carga diferida del panel del proyecto
+    const btnPanel = $('#btnCargarPanel', app);
+    if (btnPanel) {
+      btnPanel.addEventListener('click', () => {
+        const frame = $('#projectFrame', app);
+        frame.innerHTML = '<iframe src="' + PANEL_URL + '" title="Mi ruta de duplicación" loading="lazy" allowfullscreen></iframe>';
+      });
+    }
+
+    // Animación de aparición de secciones
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(en => {
+          if (en.isIntersecting) {
+            en.target.classList.add('in');
+            io.unobserve(en.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+
+      $$('.reveal', app).forEach(el => io.observe(el));
+    } else {
+      $$('.reveal', app).forEach(el => el.classList.add('in'));
+    }
+  }
+
+  /* ================== LOGIN ================== */
+  const form = $('#loginForm');
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    limpiarError();
+
+    const intentos = leerIntentos();
+    const restante = Math.ceil((intentos.hasta - Date.now()) / 1000);
+    if (restante > 0) {
+      mostrarError('Demasiados intentos. Espera ' + restante + ' segundos.');
+      return;
+    }
+
+    const usuario = $('#user').value.trim();
+    const password = $('#pass').value;
+
+    if (!usuario || !password) {
+      mostrarError('Completa usuario y contraseña.');
+      return;
+    }
+
+    const resultado = validarAcceso(usuario, password);
+
+    if (resultado.ok) {
+      guardarIntentos({ fallos: 0, hasta: 0 });
+      guardarSesion(usuario.trim().toLowerCase());
+      form.reset();
+      mostrarApp(usuario.trim().toLowerCase());
+      toast('Bienvenido/a de nuevo 👋');
+    } else {
+      intentos.fallos = (intentos.fallos || 0) + 1;
+
+      if (intentos.fallos >= MAX_INTENTOS) {
+        intentos.fallos = 0;
+        intentos.hasta = Date.now() + BLOQUEO_MS;
+        guardarIntentos(intentos);
+        mostrarError('Cuenta bloqueada temporalmente por seguridad. Espera 60 segundos.');
+      } else {
+        guardarIntentos(intentos);
+        mostrarError(resultado.msg + ' Intentos restantes: ' + (MAX_INTENTOS - intentos.fallos) + '.');
+      }
+      $('#pass').value = '';
+      $('#pass').focus();
+    }
+  });
+
+  // Mostrar / ocultar contraseña
+  $('#togglePass').addEventListener('click', function () {
+    const input = $('#pass');
+    const esPassword = input.type === 'password';
+    input.type = esPassword ? 'text' : 'password';
+    this.textContent = esPassword ? '🙈' : '👁';
+    this.setAttribute('aria-label', esPassword ? 'Ocultar contraseña' : 'Mostrar contraseña');
+    input.focus();
+  });
+
+  /* ================== ARRANQUE ================== */
+  document.addEventListener('DOMContentLoaded', function () {
+    const sesion = leerSesion();
+    if (sesion) {
+      mostrarApp(sesion.user);
+    } else {
+      $('#user').focus();
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
