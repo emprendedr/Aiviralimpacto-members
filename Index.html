@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Aiviralimpacto – Plataforma de Socios</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #0d0d0d;
+            color: white;
+        }
+        header {
+            background: #111;
+            padding: 20px;
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: #00eaff;
+        }
+        nav {
+            background: #1a1a1a;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        nav a {
+            color: #00eaff;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        section {
+            padding: 40px;
+        }
+        iframe {
+            width: 100%;
+            height: 1000px;
+            border: 0;
+        }
+        .login-box {
+            width: 300px;
+            margin: 100px auto;
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: none;
+        }
+        button {
+            padding: 10px 20px;
+            background: #00eaff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+
+    <script>
+        function login() {
+            const user = document.getElementById("user").value;
+            const pass = document.getElementById("pass").value;
+
+            if (user === "socio" && pass === "impacto2024") {
+                document.getElementById("login").style.display = "none";
+                document.getElementById("content").style.display = "block";
+            } else {
+                alert("Usuario o contraseña incorrectos");
+            }
+        }
+    </script>
+</head>
+
+<body>
+
+    <!-- LOGIN -->
+    <div id="login" class="login-box">
+        <h2>Acceso Socios</h2>
+        <input type="text" id="user" placeholder="Usuario">
+        <input type="password" id="pass" placeholder="Contraseña">
+        <button onclick="login()">Entrar</button>
+    </div>
+
+    <!-- CONTENIDO PROTEGIDO -->
+    <div id="content" style="display:none;">
+
+        <header>Aiviralimpacto – Plataforma Oficial</header>
+
+        <nav>
+            <a href="#clases">Clases</a>
+            <a href="#tutoriales">Tutoriales</a>
+            <a href="#duplicacion">Sistema de Duplicación</a>
+            <a href="#presentacion">Presentación</a>
+            <a href="#proyecto">Mi Proyecto</a>
+        </nav>
+
+        <section id="clases">
+            <h2>Clases en Vivo</h2>
+            <p>Aprende IA, redes y automatización de ingresos.</p>
+
+            <h3>Horarios (Hora del Pacífico)</h3>
+            <ul>
+                <li>Lunes – 8:30 AM y 6:30 PM</li>
+                <li>Martes – 8:30 AM y 6:30 PM</li>
+                <li>Miércoles – 8:30 AM y 6:30 PM</li>
+                <li>Viernes – 8:30 AM y 6:30 PM</li>
+            </ul>
+
+            <h3>Zoom</h3>
+            <a href="https://us06web.zoom.us/j/2216623617?pwd=2YnVoab2lAnhwbEPN7bzMPfajN08HZ.1" target="_blank">
+                Entrar a la clase
+            </a>
+            <p><strong>ID:</strong> 2216623617</p>
+            <p><strong>Clave:</strong> 33777</p>
+        </section>
+
+        <section id="tutoriales">
+            <h2>Tutoriales</h2>
+            <p>Aquí podrás subir tus videos de entrenamiento.</p>
+        </section>
+
+        <section id="duplicacion">
+            <h2>Sistema de Duplicación</h2>
+            <p>Sube aquí tu aplicación y herramientas de duplicación.</p>
+        </section>
+
+        <section id="presentacion">
+            <h2>Presentación Oficial</h2>
+            <p>Incluye tu presentación del negocio, PDF o video.</p>
+        </section>
+
+        <section id="proyecto">
+            <h2>Mi Proyecto</h2>
+            <iframe src="https://TU-PROYECTO.vercel.app" title="Mi ruta de duplicación"></iframe>
+        </section>
+
+    </div>
+
+</body>
+</html>
